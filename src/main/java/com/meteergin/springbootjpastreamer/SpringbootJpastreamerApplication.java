@@ -17,7 +17,7 @@ public class SpringbootJpastreamerApplication implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringbootJpastreamerApplication.class);
 
-    private UserService userService;
+    private final UserService userService;
 
     public SpringbootJpastreamerApplication(UserService userService) {
         this.userService = userService;
@@ -29,15 +29,15 @@ public class SpringbootJpastreamerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<User> userList = generateRandomUsers();
+        List<User> userList = generateRandomUsers(100);
         userService.saveAll(userList);
     }
 
-    private List<User> generateRandomUsers() {
+    private List<User> generateRandomUsers(int numberOfUsers) {
         List<User> userList = new ArrayList();
 
-        for (int i = 0; i < 100; i++) {
-            Faker faker = new Faker();
+        for (int i = 0; i < numberOfUsers; i++) {
+            Faker faker = Faker.instance();
             Name name = faker.name();
 
             User user = User.builder().
