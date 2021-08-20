@@ -26,8 +26,8 @@ class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(UserService userService) {
         return args -> {
-            List<User> userList = generateRandomUsers(100);
-            userService.saveAll(userList);
+            List<User> userList = generateRandomUsers(10);
+            userService.jpaRepositorySaveAll(userList);
         };
     }
 

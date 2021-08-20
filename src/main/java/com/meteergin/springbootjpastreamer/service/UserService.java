@@ -6,9 +6,13 @@
 package com.meteergin.springbootjpastreamer.service;
 
 import com.meteergin.springbootjpastreamer.entity.User;
+import com.meteergin.springbootjpastreamer.entity.User$;
 import com.meteergin.springbootjpastreamer.repository.UserRepository;
+import com.speedment.jpastreamer.application.JPAStreamer;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,22 +22,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JPAStreamer jpaStreamer;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, JPAStreamer jpaStreamer) {
         this.userRepository = userRepository;
+        this.jpaStreamer = jpaStreamer;
     }
 
-    public List<User> saveAll(List<User> userList) {
+    public List<User> jpaRepositorySaveAll(List<User> userList) {
         return userRepository.saveAll(userList);
     }
 
-    public List<User> findAll() {
+    public List<User> jpaRepositoryFindAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
+    public Optional<User> jpaRepositoryFindById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public List<User> jpaStreamerFindAll() {
+        return jpaStreamer.stream(User.class)
+                .sorted(User$.id.reversed())
+                .collect(Collectors.toList());
     }
 
 }
