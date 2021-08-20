@@ -9,6 +9,7 @@ import com.meteergin.springbootjpastreamer.entity.User;
 import com.meteergin.springbootjpastreamer.exception.UserNotFoundException;
 import com.meteergin.springbootjpastreamer.service.UserService;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,31 @@ public class UserController {
     @GetMapping("/jpa-streamer/all")
     public ResponseEntity<List<User>> jpaStreamerFindAll() {
         return new ResponseEntity(userService.jpaStreamerFindAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/jpa-streamer/findByFirstCharacterOfFirstName/{character}")
+    public ResponseEntity<List<User>> jpaStreamerFindByFirstCharacterOfFirstName(@PathVariable String character) {
+        return new ResponseEntity(userService.jpaStreamerFindByFirstCharacterOfFirstName(character), HttpStatus.OK);
+    }
+
+    @GetMapping("/jpa-streamer/findByAge/{age}")
+    public ResponseEntity<List<User>> jpaStreamerFindByAge(@PathVariable Integer age) {
+        return new ResponseEntity(userService.jpaStreamerFindByAge(age), HttpStatus.OK);
+    }
+
+    @GetMapping("/jpa-streamer/findByLessThanAge/{age}")
+    public ResponseEntity<List<User>> jpaStreamerFindByLessThanAge(@PathVariable Integer age) {
+        return new ResponseEntity(userService.jpaStreamerFindByLessThanAge(age), HttpStatus.OK);
+    }
+
+    @GetMapping("/jpa-streamer/jpaStreamerFindByFirstCharacterOfFirstNameAndAge/{character}/{age}")
+    public ResponseEntity<List<User>> jpaStreamerFindByFirstCharacterOfFirstNameAndAge(@PathVariable String character, @PathVariable Integer age) {
+        return new ResponseEntity(userService.jpaStreamerFindByFirstCharacterOfFirstNameAndAge(character, age), HttpStatus.OK);
+    }
+
+    @GetMapping("/jpa-streamer/jpaStreamerGroupByAge")
+    public ResponseEntity<Map<Integer, List<User>>> jpaStreamerGroupByAge() {
+        return new ResponseEntity(userService.jpaStreamerGroupByAge(), HttpStatus.OK);
     }
 
 }
