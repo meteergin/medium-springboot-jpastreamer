@@ -9,8 +9,6 @@ import com.meteergin.springbootjpastreamer.entity.User;
 import com.meteergin.springbootjpastreamer.exception.UserNotFoundException;
 import com.meteergin.springbootjpastreamer.service.UserService;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,44 +37,109 @@ public class UserController {
         return new ResponseEntity<>(userService.jpaRepositoryFindAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/jpa-repository/{id}")
-    public ResponseEntity<User> jpaRepositoryFindById(@PathVariable Long id) {
-        Optional<User> user = userService.jpaRepositoryFindById(id);
-        if (user.isPresent()) {
-            return new ResponseEntity<>(user.get(), HttpStatus.OK);
-        } else {
-            throw new UserNotFoundException(id);
-        }
-    }
-
     @GetMapping("/jpa-streamer/all")
     public ResponseEntity<List<User>> jpaStreamerFindAll() {
         return new ResponseEntity(userService.jpaStreamerFindAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/jpa-repository/{id}")
+    public ResponseEntity<User> jpaRepositoryFindById(@PathVariable Long id) {
+        User user = userService.jpaRepositoryFindById(id);
+        if (null != user) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    @GetMapping("/jpa-streamer/{id}")
+    public ResponseEntity<User> jpaStreamerFindById(@PathVariable Long id) {
+        User user = userService.jpaStreamerFindById(id);
+        if (null != user) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    @GetMapping("/jpa-repository/findByFirstCharacterOfFirstName/{character}")
+    public ResponseEntity<List<User>> jpaSRepositoryFindByFirstCharacterOfFirstName(@PathVariable String character) {
+        List<User> userList = userService.jpaRepositoryFindByFirstCharacterOfFirstName(character);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
     @GetMapping("/jpa-streamer/findByFirstCharacterOfFirstName/{character}")
     public ResponseEntity<List<User>> jpaStreamerFindByFirstCharacterOfFirstName(@PathVariable String character) {
-        return new ResponseEntity(userService.jpaStreamerFindByFirstCharacterOfFirstName(character), HttpStatus.OK);
+        List<User> userList = userService.jpaStreamerFindByFirstCharacterOfFirstName(character);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @GetMapping("/jpa-repository/findByAge/{age}")
+    public ResponseEntity<List<User>> jpaRepositoryFindByAge(@PathVariable Integer age) {
+        List<User> userList = userService.jpaRepositoryFindByAge(age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     @GetMapping("/jpa-streamer/findByAge/{age}")
     public ResponseEntity<List<User>> jpaStreamerFindByAge(@PathVariable Integer age) {
-        return new ResponseEntity(userService.jpaStreamerFindByAge(age), HttpStatus.OK);
+        List<User> userList = userService.jpaStreamerFindByAge(age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @GetMapping("/jpa-repository/findByLessThanAge/{age}")
+    public ResponseEntity<List<User>> jpaRepositoryFindByLessThanAge(@PathVariable Integer age) {
+        List<User> userList = userService.jpaRepositoryFindByLessThanAge(age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     @GetMapping("/jpa-streamer/findByLessThanAge/{age}")
     public ResponseEntity<List<User>> jpaStreamerFindByLessThanAge(@PathVariable Integer age) {
-        return new ResponseEntity(userService.jpaStreamerFindByLessThanAge(age), HttpStatus.OK);
+        List<User> userList = userService.jpaStreamerFindByLessThanAge(age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
-    @GetMapping("/jpa-streamer/jpaStreamerFindByFirstCharacterOfFirstNameAndAge/{character}/{age}")
+    @GetMapping("/jpa-repository/findByFirstCharacterOfFirstNameAndAge/{character}/{age}")
+    public ResponseEntity<List<User>> jpaRepositoryFindByFirstCharacterOfFirstNameAndAge(@PathVariable String character, @PathVariable Integer age) {
+        List<User> userList = userService.jpaRepositoryFindByFirstCharacterOfFirstNameAndAge(character, age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @GetMapping("/jpa-streamer/findByFirstCharacterOfFirstNameAndAge/{character}/{age}")
     public ResponseEntity<List<User>> jpaStreamerFindByFirstCharacterOfFirstNameAndAge(@PathVariable String character, @PathVariable Integer age) {
-        return new ResponseEntity(userService.jpaStreamerFindByFirstCharacterOfFirstNameAndAge(character, age), HttpStatus.OK);
-    }
-
-    @GetMapping("/jpa-streamer/jpaStreamerGroupByAge")
-    public ResponseEntity<Map<Integer, List<User>>> jpaStreamerGroupByAge() {
-        return new ResponseEntity(userService.jpaStreamerGroupByAge(), HttpStatus.OK);
+        List<User> userList = userService.jpaStreamerFindByFirstCharacterOfFirstNameAndAge(character, age);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
 }

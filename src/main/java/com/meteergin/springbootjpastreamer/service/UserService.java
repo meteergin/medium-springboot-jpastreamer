@@ -10,7 +10,6 @@ import com.meteergin.springbootjpastreamer.entity.User$;
 import com.meteergin.springbootjpastreamer.repository.UserRepository;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,20 +39,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> jpaRepositoryFindById(Long id) {
-        return userRepository.findById(id);
-    }
-
     public List<User> jpaStreamerFindAll() {
         return jpaStreamer.stream(User.class).
                 sorted(User$.id).
                 collect(Collectors.toList());
     }
 
-    public List<User> jpaStreamerFindByFirstCharacterOfFirstName(String character) {
+    public User jpaRepositoryFindById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
+    }
+
+    public User jpaStreamerFindById(Long id) {
         return jpaStreamer.stream(User.class).
-                filter(User$.firstName.startsWith(character)).
-                collect(Collectors.toList());
+                filter(User$.id.equal(id)).
+                findFirst().map(u -> u).
+                orElse(null);
+    }
+
+    public List<User> jpaRepositoryFindByAge(Integer age) {
+        return userRepository.findByAge(age);
     }
 
     public List<User> jpaStreamerFindByAge(Integer age) {
@@ -62,10 +71,28 @@ public class UserService {
                 collect(Collectors.toList());
     }
 
+    public List<User> jpaRepositoryFindByFirstCharacterOfFirstName(String character) {
+        return userRepository.findByFirstNameStartingWith(character);
+    }
+
+    public List<User> jpaStreamerFindByFirstCharacterOfFirstName(String character) {
+        return jpaStreamer.stream(User.class).
+                filter(User$.firstName.startsWith(character)).
+                collect(Collectors.toList());
+    }
+
+    public List<User> jpaRepositoryFindByLessThanAge(Integer age) {
+        return userRepository.findByAgeLessThan(age);
+    }
+
     public List<User> jpaStreamerFindByLessThanAge(Integer age) {
         return jpaStreamer.stream(User.class).
                 filter(User$.age.lessThan(age)).
                 collect(Collectors.toList());
+    }
+
+    public List<User> jpaRepositoryFindByFirstCharacterOfFirstNameAndAge(String character, Integer age) {
+        return userRepository.findByFirstNameStartingWithAndAge(character, age);
     }
 
     public List<User> jpaStreamerFindByFirstCharacterOfFirstNameAndAge(String character, Integer age) {
@@ -73,11 +100,6 @@ public class UserService {
                 filter(User$.firstName.startsWith(character).
                         and(User$.age.equal(age))).
                 collect(Collectors.toList());
-    }
-
-    public Map<Integer, List<User>> jpaStreamerGroupByAge() {
-        return jpaStreamer.stream(User.class).
-                collect(Collectors.groupingBy(User$.age.asInt()));
     }
 
 }
