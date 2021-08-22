@@ -27,8 +27,6 @@ public class JpaStreamerUserController implements IUserController {
 
     private UserService userService;
 
-    private static final String JPA_STREAMER = "/jpa-streamer";
-
     @Autowired
     public JpaStreamerUserController(UserService userService) {
         this.userService = userService;
