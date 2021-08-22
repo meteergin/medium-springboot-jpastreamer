@@ -94,4 +94,26 @@ public class JpaStreamerUserController implements IUserController {
             throw new UserNotFoundException();
         }
     }
+
+    @GetMapping("/findByAgeRange/{age1}/{age2}")
+    @Override
+    public ResponseEntity<List<User>> findByAgeRange(@PathVariable Integer age1, @PathVariable Integer age2) {
+        List<User> userList = userService.jpaStreamerFindByAgeRange(age1, age2);
+        if (!userList.isEmpty()) {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @GetMapping("/findMaximumAge")
+    @Override
+    public ResponseEntity<User> findMaximumAge() {
+        User user = userService.jpaStreamerFindMaximumAge();
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 }

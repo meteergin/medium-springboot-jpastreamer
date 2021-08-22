@@ -27,4 +27,8 @@ public interface IUserController {
 
     public ResponseEntity<List<User>> findByFirstCharacterOfFirstNameAndAge(String character, Integer age);
 
+    public ResponseEntity<List<User>> findByAgeRange(Integer age1, Integer age2);
+
+    public ResponseEntity<User> findMaximumAge();
+
 }

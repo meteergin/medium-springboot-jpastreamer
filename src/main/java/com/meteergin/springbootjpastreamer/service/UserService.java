@@ -9,6 +9,7 @@ import com.meteergin.springbootjpastreamer.entity.User;
 import com.meteergin.springbootjpastreamer.entity.User$;
 import com.meteergin.springbootjpastreamer.repository.UserRepository;
 import com.speedment.jpastreamer.application.JPAStreamer;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,6 +101,26 @@ public class UserService {
                 filter(User$.firstName.startsWith(character).
                         and(User$.age.equal(age))).
                 collect(Collectors.toList());
+    }
+
+    public List<User> jpaRepositoryFindByAgeRange(Integer age1, Integer age2) {
+        return userRepository.findByAgeBetween(age1, age2);
+    }
+
+    public List<User> jpaStreamerFindByAgeRange(Integer age1, Integer age2) {
+        return jpaStreamer.stream(User.class).
+                filter(User$.age.between(age1, age2)).
+                collect(Collectors.toList());
+    }
+
+    public User jpaRepositoryFindMaximumAge() {
+        return userRepository.findFirstByOrderByAgeDesc();
+    }
+
+    public User jpaStreamerFindMaximumAge() {
+        return jpaStreamer.stream(User.class).
+                max(Comparator.comparing(User::getAge)).
+                get();
     }
 
 }

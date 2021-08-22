@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public List<User> findByAgeLessThan(Integer age);
 
     public List<User> findByFirstNameStartingWithAndAge(String character, Integer age);
+
+    public List<User> findByAgeBetween(Integer age1, Integer age2);
+
+    public User findFirstByOrderByAgeDesc();
+
 }

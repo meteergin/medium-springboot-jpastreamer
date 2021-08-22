@@ -49,6 +49,10 @@ class LoadDatabase {
             userList.add(user);
         }
 
+        LOGGER.info("******************************");
+        LOGGER.info(numberOfUsers + " test users were created.");
+        LOGGER.info("******************************");
+
         return userList;
     }
 }
