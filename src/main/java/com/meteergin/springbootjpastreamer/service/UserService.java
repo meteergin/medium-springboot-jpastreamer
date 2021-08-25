@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<User> jpaRepositoryFindAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByIdAsc();
     }
 
     public List<User> jpaStreamerFindAll() {

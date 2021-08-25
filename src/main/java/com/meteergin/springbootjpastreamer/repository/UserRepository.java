@@ -15,6 +15,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    public List<User> findAllByOrderByIdAsc();
+
     public List<User> findByAge(Integer age);
 
     public List<User> findByFirstNameStartingWith(String character);
